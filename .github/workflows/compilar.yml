@@ -1,0 +1,33 @@
+name: Testar Compilação do PPL
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Baixar o código do repositório
+      uses: actions/checkout@v4
+
+    - name: Instalar compilador (Clang / GCC)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential clang
+
+    - name: Testar compilação com Clang
+      run: |
+        clang++ -O3 -std=c++17 src/ppl.cpp -o ppl_clang
+
+    - name: Testar compilação com G++
+      run: |
+        g++ -O3 -std=c++17 src/ppl.cpp -o ppl_g++
+
+    - name: Testar execução básica
+      run: |
+        ./ppl_clang exemplos/ola_mundo.ppls || true
+        
