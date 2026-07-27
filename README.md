@@ -5,7 +5,10 @@ so, the project was (a little) vibe coded
 
 # Installing
 if you are on termux run this:
-```curl -fsSL https://raw.githubusercontent.com/bernardo58247/pl-language/refs/heads/main/install_pl_termux.sh | bash```
-
+```bash
+curl -fsSL https://raw.githubusercontent.com/bernardo58247/pl-language/refs/heads/main/install_pl_termux.sh | bash
+```
 if you are on linux (Ubuntu, Debian...) bash this instead:
-```curl -fsSL https://raw.githubusercontent.com/bernardo58247/pl-language/bash/heads/main/install_pl.sh | bash```
+```bash
+curl -fsSL https://raw.githubusercontent.com/bernardo58247/pl-language/bash/heads/main/install_pl.sh | bash
+```
