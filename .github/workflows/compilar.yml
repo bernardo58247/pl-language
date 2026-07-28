@@ -11,26 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Atualizado para v4 (resolve o aviso do Node.js)
-    - name: Baixar o código do repositório
+    - name: Baixar código do repositório
       uses: actions/checkout@v4
 
-    - name: Instalar compilador (Clang / GCC)
+    - name: Instalar compiladores
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential clang
 
-    # Garante permissão e verifica se o arquivo fonte existe antes de compilar
-    - name: Compilar com Clang
+    - name: Compilar com Clang++
       run: |
         clang++ -O3 -std=c++17 src/ppl.cpp -o ppl_clang
 
     - name: Compilar com G++
       run: |
         g++ -O3 -std=c++17 src/ppl.cpp -o ppl_g++
-
-    # Testa se o executável foi gerado sem falhar o CI por falta de arquivo de exemplo
-    - name: Testar executável
-      run: |
-        ./ppl_clang --version || ./ppl_clang || true
-        
