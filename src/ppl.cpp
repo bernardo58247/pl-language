@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <regex>
 #include <cstdlib>
+#include <stdexcept>
 
 class InterpretadorPPL {
 private:
@@ -37,19 +38,20 @@ private:
 
     std::string buscar_variavel(const std::string& nome, const std::unordered_map<std::string, std::string>& escopo_local) {
         std::string chave = aparar(nome);
+        
         auto it_local = escopo_local.find(chave);
         if (it_local != escopo_local.end()) return it_local->second;
 
         auto it_global = escopo_global.find(chave);
         if (it_global != escopo_global.end()) return it_global->second;
 
-        if (chave.front() == '"' && chave.back() == '"') {
+        if (chave.length() >= 2 && chave.front() == '"' && chave.back() == '"') {
             return chave.substr(1, chave.length() - 2);
         }
         return chave;
     }
 
-    std::string formatar_texto(std::string texto, std::unordered_map<std::string, std::string>& escopo_local) {
+    std::string formatar_texto(std::string texto, const std::unordered_map<std::string, std::string>& escopo_local) {
         for (const auto& [var, val] : escopo_local) {
             std::string alvo = "$" + var;
             size_t pos = 0;
@@ -124,7 +126,7 @@ public:
                 }
                 else if (linha_texto.rfind("executar.os", 0) == 0) {
                     std::regex padrao_os(R"(executar\.os\s*"(.*?)"\)");
-                    std::smatch match;
+                    std::smatch match; // <-- Correção: declarando a variável 'match'
                     if (std::regex_search(linha_texto, match, padrao_os)) {
                         std::string cmd_os = formatar_texto(match[1].str(), escopo_local);
                         std::system(cmd_os.c_str());
