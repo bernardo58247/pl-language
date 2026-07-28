@@ -9,7 +9,7 @@ and the project was (a little) vibe coded
 # Installation
 if you are on termux run this:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/bernardo58247/pl-language/refs/heads/main/install_pl_termux.sh | bash
+curl -fsSL https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main/install.sh | bash
 ```
 if you are on linux (Ubuntu, Debian...) bash this instead:
 ```bash
