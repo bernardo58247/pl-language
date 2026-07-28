@@ -2,10 +2,10 @@
   <img src="https://github.com/user-attachments/assets/ca59bae5-93fc-4b49-be98-8d7bf2a3458b" alt="Logo PPL" width="200">
 </p>
 
-# pl-language
-PL (Portuguese Language) is a new programming language created to be simple like lua.
+# ppl-language
+PPL (Portuguese Programing Language) is a new programming language created to be simple like lua.
 the key difference from the others is that the syntax is in Portuguese Brazilian (you know what that means, that is made by a Brazilian!)
-so, the project was (a little) vibe coded
+and the project was (a little) vibe coded
 
 # Installation
 if you are on termux run this:
