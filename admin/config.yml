@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: bernardo58247/ppl-programming-language # ex: bernardo58247/PPL
+  branch: main # ou master
+
+# pasta onde as imagens enviadas pelo painel vão ficar
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+# configurações das coleções de conteúdo do site
+collections:
+  - name: "paginas"
+    label: "Páginas"
+    files:
+      - file: "index.md"
+        label: "Página Inicial"
+        name: "index"
+        fields:
+          - { label: "Título", name: "title", widget: "string" }
+          - { label: "Conteúdo", name: "body", widget: "markdown" }
