@@ -87,7 +87,7 @@ public:
 
             try {
                 if (linha_texto.rfind("ler.input", 0) == 0) {
-                    std::regex padrao_input(R"(ler\.input\s*"(.*?)"(?:\s+para\s+(\w+))?)");
+                    std::regex padrao_input(R"(ler\.input\s*\"(.*?)\"(?:\s+para\s+(\w+))?)");
                     std::smatch match;
                     if (std::regex_search(linha_texto, match, padrao_input)) {
                         std::string mensagem = match[1].str();
@@ -103,7 +103,7 @@ public:
                     }
                 }
                 else if (linha_texto.rfind("se", 0) == 0) {
-                    std::regex padrao_se(R"(se\s*\[\s*(\w+)\s*(==|!=)\s*"(.*?)"\s*\]\s*então\s*\((.*?)\)(?:\s*senão\s*\((.*?)\))?)");
+                    std::regex padrao_se(R"(se\s*\[\s*(\w+)\s*(==|!=)\s*\"(.*?)\"\s*\]\s*então\s*\((.*?)\)(?:\s*senão\s*\((.*?)\))?)");
                     std::smatch match;
                     if (std::regex_search(linha_texto, match, padrao_se)) {
                         std::string var_nome = match[1].str();
@@ -125,8 +125,8 @@ public:
                     }
                 }
                 else if (linha_texto.rfind("executar.os", 0) == 0) {
-                    std::regex padrao_os(R"(executar\.os\s*"(.*?)"\)");
-                    std::smatch match; // <-- Correção: declarando a variável 'match'
+                    std::regex padrao_os(R"(executar\.os\s*\"(.*?)\")");
+                    std::smatch match;
                     if (std::regex_search(linha_texto, match, padrao_os)) {
                         std::string cmd_os = formatar_texto(match[1].str(), escopo_local);
                         std::system(cmd_os.c_str());
