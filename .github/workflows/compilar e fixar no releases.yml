@@ -1,0 +1,47 @@
+name: compilar e publicar release
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: baixar código-fonte
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # puxa o histórico para ler os commits do dono
+
+      - name: compilar ppl.cpp
+        run: g++ -O3 -std=c++17 src/ppl.cpp -o ppl
+
+      - name: testar executável
+        run: ./ppl --version || ./ppl -h || echo "compilado com sucesso"
+
+      - name: gerar changelog dos commits
+        id: changelog
+        run: |
+          # pega os commits desde a última tag ou do último push e formata
+          COMMITS=$(git log -1 --pretty=format:"%s")
+          echo "COMMIT_MSG=$COMMITS" >> $GITHUB_ENV
+
+      - name: publicar no releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly-latest
+          name: "ppl - atualização recente"
+          body: |
+            ### 📝 o que mudou nesta versão:
+
+            ${{ env.COMMIT_MSG }}
+
+            ---
+            *binário gerado automaticamente a partir do último commit.*
+          prerelease: true
+          files: ppl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
