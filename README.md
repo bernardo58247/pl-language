@@ -1,6 +1,5 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/ca59bae5-93fc-4b49-be98-8d7bf2a3458b" alt="Logo PPL" width="200">
-</p>
+<img width="2000" height="2000" alt="91580" src="https://github.com/user-attachments/assets/3b2b600e-6f09-46ad-8b77-eee8e409e972" />
+
 
 # ppl-language
 PPL (Portuguese Programing Language) is a new programming language created to be simple like lua.
