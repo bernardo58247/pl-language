@@ -102,6 +102,33 @@ public:
                         throw std::runtime_error("formato inválido para ler.input");
                     }
                 }
+                else if (linha_texto.rfind("escolhas", 0) == 0) {
+                    std::string bloco_escolhas = linha_texto;
+                    while (bloco_escolhas.find(')') == std::string::npos && num_linha + 1 < linhas.size()) {
+                        num_linha++;
+                        bloco_escolhas += "\n" + linhas[num_linha];
+                    }
+
+                    std::regex padrao_escolhas(R"(escolhas\s*\"(.*?)\"\s*\(([\s\S]*?)\))");
+                    std::smatch match;
+                    if (std::regex_search(bloco_escolhas, match, padrao_escolhas)) {
+                        std::string mensagem = match[1].str();
+                        std::string conteudo_opcoes = match[2].str();
+
+                        std::cout << mensagem << std::endl;
+
+                        std::regex padrao_opcao(R"((\d+|\w+)\s*:\s*\"(.*?)\")");
+                        auto inicio = std::sregex_iterator(conteudo_opcoes.begin(), conteudo_opcoes.end(), padrao_opcao);
+                        auto fim = std::sregex_iterator();
+
+                        for (std::sregex_iterator i = inicio; i != fim; ++i) {
+                            std::smatch match_op = *i;
+                            std::cout << match_op[1].str() << ") " << match_op[2].str() << std::endl;
+                        }
+                    } else {
+                        throw std::runtime_error("formato inválido para escolhas");
+                    }
+                }
                 else if (linha_texto.rfind("se", 0) == 0) {
                     std::regex padrao_se(R"(se\s*\[\s*(\w+)\s*(==|!=)\s*\"(.*?)\"\s*\]\s*então\s*\((.*?)\)(?:\s*senão\s*\((.*?)\))?)");
                     std::smatch match;
@@ -213,3 +240,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
