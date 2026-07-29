@@ -1,50 +1,36 @@
-name: compilar e publicar release
+name: Release Linux Executable
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ main ]
     paths:
       # roda SÓ quando houver alteração neste arquivo específico
       - 'src/ppl.cpp'
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: baixar código-fonte
+      - name: baixar o código
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # puxa o histórico para ler os commits do dono
 
-      - name: compilar ppl.cpp
-        run: g++ -O3 -std=c++17 src/ppl.cpp -o ppl
-
-      - name: testar executável
-        run: ./ppl --version || ./ppl -h || echo "compilado com sucesso"
-
-      - name: gerar changelog dos commits
-        id: changelog
+      - name: compilar c++ no linux (g++)
         run: |
-          # pega os commits desde a última tag ou do último push e formata
-          COMMITS=$(git log -1 --pretty=format:"%s")
-          echo "COMMIT_MSG=$COMMITS" >> $GITHUB_ENV
+          mkdir -p build
+          g++ -O3 -std=c++17 src/ppl.cpp -o build/ppl-linux
 
-      - name: publicar no releases
+      - name: criar / atualizar release fixa no github
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: nightly-latest
-          name: "ppl - atualização recente"
-          body: |
-            ### 📝 o que mudou nesta versão:
-
-            ${{ env.COMMIT_MSG }}
-
-            ---
-            *binário gerado automaticamente a partir do último commit.*
-          prerelease: true
-          files: ppl
+          tag_name: latest
+          name: "PPL Builds (Latest)"
+          body: "compilação automática de alta performance para linux/windows gerada a partir das últimas alterações no `ppl.cpp`."
+          draft: false
+          prerelease: false
+          files: build/ppl-linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
