@@ -77,7 +77,6 @@ private:
             nome_limpo = nome_limpo.substr(1, nome_limpo.length() - 2);
         }
 
-        // 1. busca local pelo arquivo .ppll ou .ppl
         std::vector<std::string> candidatos_locais = {
             nome_limpo,
             nome_limpo + ".ppll",
@@ -89,7 +88,6 @@ private:
             if (arq.good()) return caminho;
         }
 
-        // 2. busca na pasta global do ppl-man (~/.ppl/modules/)
         const char* env_home = std::getenv("HOME");
         if (env_home) {
             std::string home(env_home);
@@ -170,11 +168,12 @@ public:
                         bloco_escolhas += "\n" + linhas[num_linha];
                     }
 
-                    std::regex padrao_escolhas(R"(escolhas\s*\"(.*?)\"\s*\(([\s\S]*?)\))");
+                    std::regex padrao_escolhas(R"(escolhas\s*\"(.*?)\"(?:\s+para\s+(\w+))?\s*\(([\s\S]*?)\))");
                     std::smatch match;
                     if (std::regex_search(bloco_escolhas, match, padrao_escolhas)) {
                         std::string mensagem = match[1].str();
-                        std::string conteudo_opcoes = match[2].str();
+                        std::string var_destino = match[2].str();
+                        std::string conteudo_opcoes = match[3].str();
 
                         std::cout << mensagem << std::endl;
 
@@ -185,6 +184,13 @@ public:
                         for (std::sregex_iterator i = inicio; i != fim; ++i) {
                             std::smatch match_op = *i;
                             std::cout << match_op[1].str() << ") " << match_op[2].str() << std::endl;
+                        }
+
+                        std::string entrada;
+                        std::cout << "> ";
+                        std::getline(std::cin, entrada);
+                        if (!var_destino.empty()) {
+                            escopo_local[var_destino] = aparar(entrada);
                         }
                     } else {
                         throw std::runtime_error("formato inválido para escolhas");
