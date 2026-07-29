@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+MODULES_DIR="$HOME/.ppl/modules"
+PPL_MAN_VERSION="1.1.0"
+REPO_URL="https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main"
+
+mkdir -p "$MODULES_DIR"
+
+obter_versao_ppl() {
+    if command -v ppl >/dev/null 2>&1; then
+        # tenta pegar a primeira linha de saída da PPL
+        echo "PPL (instalado em $(which ppl))"
+    else
+        echo "PPL (não instalado ou não encontrado no PATH)"
+    fi
+}
+
+mostrar_ajuda() {
+    echo "ppl-man - gerenciador de pacotes e ferramentas da PPL"
+    echo ""
+    echo "uso:"
+    echo "  ppl-man install <usuario/repo>  instala um pacote do github"
+    echo "  ppl-man remove <nome-do-pacote> remove um pacote instalado"
+    echo "  ppl-man list                  lista todos os pacotes instalados"
+    echo "  ppl-man reinstalar            reinstala/conserta a PPL direto do github"
+    echo "  ppl-man consertar             malias para reinstalar"
+    echo "  ppl-man versao                exibe a versão do PPL e do PPL-man"
+    echo "  ppl-man help                  mostra esta mensagem"
+}
+
+case "$1" in
+    install)
+        PACOTE="$2"
+        if [ -z "$PACOTE" ]; then
+            echo "erro: informe o pacote no formato usuario/repositorio"
+            echo "exemplo: ppl-man install usuario/minha-lib-ppl"
+            exit 1
+        fi
+
+        NOME_MODULO=$(basename "$PACOTE")
+        DESTINO="$MODULES_DIR/$NOME_MODULO"
+
+        if [ -d "$DESTINO" ]; then
+            echo "atualizando $NOME_MODULO..."
+            git -C "$DESTINO" pull --quiet
+        else
+            echo "baixando $PACOTE..."
+            git clone "https://github.com/$PACOTE.git" "$DESTINO" --depth 1 --quiet
+        fi
+
+        if [ $? -eq 0 ]; then
+            echo "✓ pacote '$NOME_MODULO' instalado com sucesso em $DESTINO"
+        else
+            echo "✗ falha ao instalar o pacote."
+        fi
+        ;;
+
+    remove)
+        MODULO="$2"
+        if [ -z "$MODULO" ]; then
+            echo "erro: informe o nome do módulo a ser removido."
+            exit 1
+        fi
+
+        DESTINO="$MODULES_DIR/$MODULO"
+        if [ -d "$DESTINO" ]; then
+            rm -rf "$DESTINO"
+            echo "✓ pacote '$MODULO' removido."
+        else
+            echo "erro: pacote '$MODULO' não está instalado."
+        fi
+        ;;
+
+    list)
+        echo "pacotes instalados em $MODULES_DIR:"
+        if [ -z "$(ls -A "$MODULES_DIR" 2>/dev/null)" ]; then
+            echo "  (nenhum pacote instalado)"
+        else
+            for dir in "$MODULES_DIR"/*; do
+                [ -d "$dir" ] && echo "  - $(basename "$dir")"
+            done
+        fi
+        ;;
+
+    reinstalar|consertar)
+        echo "=== reinstalando / consertando a PPL ==="
+        echo "-> baixando instalador atualizado do repositório..."
+        curl -fsSL "$REPO_URL/install.sh" | bash
+        ;;
+
+    versao|version|-v|--version)
+        echo "ppl-man versão: $PPL_MAN_VERSION"
+        echo "ppl status: $(obter_versao_ppl)"
+        ;;
+
+    *)
+        mostrar_ajuda
+        ;;
+esac
