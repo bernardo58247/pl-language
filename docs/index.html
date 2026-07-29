@@ -8,50 +8,59 @@
 </head>
 <body>
 
-  <!-- Navegação -->
+  <!-- Menu de Navegação Suspenso (Dropdown) -->
   <nav class="navbar">
     <div class="logo">PPL</div>
-    <div class="nav-links">
-      <a href="#instalacao">Instalação</a>
-      <a href="#filosofia">Filosofia</a>
-      <a href="#pplman">ppl-man</a>
-      <a href="https://github.com/bernardo58247/ppl-programming-language" target="_blank" class="btn-github">GitHub</a>
+    
+    <div class="dropdown">
+      <button class="dropdown-btn">Menu ▾</button>
+      <div class="dropdown-content">
+        <a href="#instalacao">Instalação</a>
+        <a href="#filosofia">Filosofia</a>
+        <a href="#recursos">Recursos</a>
+        <a href="https://github.com/bernardo58247/ppl-programming-language" target="_blank">GitHub</a>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="hero">
-    <span class="badge">Linguagem Minimalista em Português</span>
-    <h1>Programar nunca foi tão direto.</h1>
-    <p>Uma experiência simples, em português e sem burocracia para criar e rodar seus scripts rapidamente.</p>
-
-    <div class="hero-buttons">
-      <a href="#instalacao" class="btn-primary">Instalar Agora</a>
-      <a href="#exemplos" class="btn-secondary">Ver Exemplos</a>
+  <!-- Hero Section (Idêntico à Imagem) -->
+  <main class="hero-container">
+    
+    <!-- Ícone do App -->
+    <div class="app-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1b2e1b"/>
+        <path d="M2 17L12 22L22 17" stroke="#1b2e1b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="#1b2e1b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-  </header>
 
-  <!-- Seção de Instalação -->
-  <section id="instalacao" class="container">
-    <h2>⚡ Instalação Rápida (Termux / Linux)</h2>
-    <p>Rode o comando abaixo no terminal para instalar a PPL e o ppl-man:</p>
-    <div class="code-box">
-      <code>curl -fsSL https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/main/install.sh | bash</code>
+    <!-- Título Principal -->
+    <h1 class="main-title">
+      PPL Language<br>
+      <span>Uma linguagem de programação moderna</span>
+    </h1>
+
+    <!-- Frase Filosofia com Cursor -->
+    <p class="quote">
+      "Se você for criar uma coisa, faça ela ser única, não uma cópia."<span class="cursor">|</span>
+    </p>
+
+    <!-- Botões Principais -->
+    <div class="action-buttons">
+      <a href="#instalacao" class="btn btn-primary">Começar</a>
+      <a href="https://github.com/bernardo58247/ppl-programming-language" target="_blank" class="btn btn-secondary">Ver no GitHub</a>
     </div>
-  </section>
 
-  <!-- Seção de Filosofia -->
-  <section id="filosofia" class="container quote-card">
-    <blockquote>
-      "Se você for criar uma coisa, faça ela ser única, não uma cópia."
-    </blockquote>
-    <cite>— Bernardo</cite>
-  </section>
+    <!-- Card de Recursos (Estilo InstallerX) -->
+    <div id="recursos" class="feature-card">
+      <h3>Compatibilidade & Leveza</h3>
+      <p>
+        Execute scripts <code>.ppl</code> e <code>.ppls</code> diretamente no Termux ou Linux. Conta com gerenciamento descentralizado de bibliotecas via <code>ppl-man</code> e suporte nativo em português.
+      </p>
+    </div>
 
-  <!-- Rodapé -->
-  <footer>
-    <p>PPL &copy; 2026 • Criado por Bernardo</p>
-  </footer>
+  </main>
 
 </body>
 </html>
