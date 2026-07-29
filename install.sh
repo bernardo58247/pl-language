@@ -111,7 +111,7 @@ $CXX -O3 -std=c++17 -s "$TMP_DIR/ppl.cpp" -o "$TMP_DIR/ppl"
 
 # 8. instalação do ppl-man
 echo "-> instalando o ppl-man..."
-curl -fsSL "https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main/ppl-man" -o $PREFIX/bin/ppl-man
+curl -fsSL "https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main/src/ppl-man" -o $PREFIX/bin/ppl-man
 chmod +x $PREFIX/bin/ppl-man
 
 # 9. instalação do binário
