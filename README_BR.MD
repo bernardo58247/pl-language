@@ -7,7 +7,13 @@ a maior diferença é que a sintaxe é em Português Brasil (voce sabe o que sig
 e o projeto foi (um pouquinho) guiada por IA
 
 # Installation
-Para instalar rode isso:
+Para instalar o PPL e o PPL-man, rode isso:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main/install.sh | bash
 ```
+## 💡 Filosofia
+
+> *"Se você for criar uma coisa, faça ela ser única, não uma cópia."*  
+> — **Bernardo**
+
+O **PPL** e o **ppl-man** nasceram dessa visão. A proposta é entregar uma experiência própria, minimalista, em português e descentralizada, sem tentar imitar a burocracia ou o funcionamento das linguagens tradicionais.
