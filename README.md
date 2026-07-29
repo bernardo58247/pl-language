@@ -11,3 +11,6 @@ To install run this:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main/install.sh | bash
 ```
+# pt_br
+
+para a versão PT_BR desse README.md vá em /README_BR.md
