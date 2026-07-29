@@ -71,6 +71,44 @@ private:
         return texto;
     }
 
+    std::string resolver_caminho_ppll(const std::string& nome_lib) {
+        std::string nome_limpo = aparar(nome_lib);
+        if (nome_limpo.length() >= 2 && nome_limpo.front() == '"' && nome_limpo.back() == '"') {
+            nome_limpo = nome_limpo.substr(1, nome_limpo.length() - 2);
+        }
+
+        // 1. busca local pelo arquivo .ppll ou .ppl
+        std::vector<std::string> candidatos_locais = {
+            nome_limpo,
+            nome_limpo + ".ppll",
+            nome_limpo + ".ppl"
+        };
+
+        for (const auto& caminho : candidatos_locais) {
+            std::ifstream arq(caminho);
+            if (arq.good()) return caminho;
+        }
+
+        // 2. busca na pasta global do ppl-man (~/.ppl/modules/)
+        const char* env_home = std::getenv("HOME");
+        if (env_home) {
+            std::string home(env_home);
+            std::vector<std::string> candidatos_globais = {
+                home + "/.ppl/modules/" + nome_limpo + "/" + nome_limpo + ".ppll",
+                home + "/.ppl/modules/" + nome_limpo + "/" + nome_limpo + ".ppl",
+                home + "/.ppl/modules/" + nome_limpo + "/index.ppll",
+                home + "/.ppl/modules/" + nome_limpo + "/index.ppl"
+            };
+
+            for (const auto& caminho : candidatos_globais) {
+                std::ifstream arq(caminho);
+                if (arq.good()) return caminho;
+            }
+        }
+
+        return "";
+    }
+
 public:
     void executar(const std::string& codigo, std::unordered_map<std::string, std::string> escopo_local = {}) {
         std::vector<std::string> linhas = dividir(codigo, '\n');
@@ -86,7 +124,30 @@ public:
             }
 
             try {
-                if (linha_texto.rfind("ler.input", 0) == 0) {
+                if (linha_texto.rfind("importar", 0) == 0) {
+                    std::regex padrao_importar(R"(importar\s*\"(.*?)\"|importar\s+(.+))");
+                    std::smatch match;
+                    if (std::regex_search(linha_texto, match, padrao_importar)) {
+                        std::string nome_lib = match[1].matched ? match[1].str() : match[2].str();
+                        std::string caminho_resolvido = resolver_caminho_ppll(nome_lib);
+
+                        if (caminho_resolvido.empty()) {
+                            throw std::runtime_error("biblioteca '" + nome_lib + "' não encontrada (.ppll)");
+                        }
+
+                        std::ifstream arquivo_lib(caminho_resolvido);
+                        if (arquivo_lib.is_open()) {
+                            std::string codigo_lib((std::istreambuf_iterator<char>(arquivo_lib)), std::istreambuf_iterator<char>());
+                            arquivo_lib.close();
+                            executar(codigo_lib, escopo_local);
+                        } else {
+                            throw std::runtime_error("falha ao abrir a biblioteca '" + caminho_resolvido + "'");
+                        }
+                    } else {
+                        throw std::runtime_error("formato inválido para importar");
+                    }
+                }
+                else if (linha_texto.rfind("ler.input", 0) == 0) {
                     std::regex padrao_input(R"(ler\.input\s*\"(.*?)\"(?:\s+para\s+(\w+))?)");
                     std::smatch match;
                     if (std::regex_search(linha_texto, match, padrao_input)) {
@@ -240,4 +301,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
