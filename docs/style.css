@@ -1,11 +1,13 @@
 :root {
-  --bg-color: #0d1117;
-  --card-bg: #161b22;
-  --text-main: #f0f6fc;
-  --text-sub: #8b949e;
-  --accent: #58a6ff;
-  --accent-hover: #79c0ff;
-  --border: #30363d;
+  --bg-dark: #121318;
+  --card-bg: #1c1e26;
+  --text-title: #b5c2ff;
+  --text-sub: #e2e2e9;
+  --text-muted: #8e909e;
+  --btn-blue: #4c71f0;
+  --btn-gray: #2e313d;
+  --border-color: #2a2d39;
+  --accent-green: #c3f2a6;
 }
 
 * {
@@ -16,142 +18,204 @@
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  line-height: 1.6;
+  background-color: var(--bg-dark);
+  color: var(--text-sub);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
 }
 
-/* Navbar */
+/* Navbar & Dropdown Menu */
 .navbar {
+  width: 100%;
+  max-width: 480px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid var(--border);
-  max-width: 1000px;
-  margin: 0 auto;
+  padding: 1rem 0;
 }
 
 .logo {
-  font-size: 1.5rem;
   font-weight: 800;
-  color: var(--accent);
-}
-
-.nav-links a {
-  color: var(--text-sub);
-  text-decoration: none;
-  margin-left: 1.5rem;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover {
-  color: var(--text-main);
-}
-
-.btn-github {
-  border: 1px solid var(--border);
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  background-color: var(--card-bg);
-}
-
-/* Hero Section */
-.hero {
-  text-align: center;
-  padding: 5rem 1rem 3rem 1rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.badge {
-  background-color: rgba(88, 166, 255, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(88, 166, 255, 0.3);
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.hero h1 {
-  font-size: 2.8rem;
-  margin: 1.2rem 0;
-  letter-spacing: -0.5px;
-}
-
-.hero p {
-  color: var(--text-sub);
   font-size: 1.2rem;
+  color: var(--text-title);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  background-color: var(--btn-gray);
+  color: var(--text-sub);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-btn:hover {
+  background-color: #383c4a;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 115%;
+  background-color: var(--card-bg);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.dropdown-content a {
+  color: var(--text-sub);
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  display: block;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--btn-gray);
+  color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Main Container */
+.hero-container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 2rem;
+}
+
+/* App Icon */
+.app-icon {
+  width: 110px;
+  height: 110px;
+  background-color: var(--accent-green);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 2rem;
 }
 
-.hero-buttons {
+.app-icon svg {
+  width: 60px;
+  height: 60px;
+}
+
+/* Titles */
+.main-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-title);
+  line-height: 1.25;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.main-title span {
+  color: var(--text-sub);
+}
+
+/* Quote Section */
+.quote {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 360px;
+  margin-bottom: 2rem;
+}
+
+.cursor {
+  color: var(--btn-blue);
+  animation: blink 1s infinite;
+  font-weight: 300;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Buttons */
+.action-buttons {
   display: flex;
+  gap: 0.8rem;
+  width: 100%;
   justify-content: center;
-  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.btn {
+  padding: 0.85rem 1.6rem;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.1s, opacity 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
-  background-color: #238636;
+  background-color: var(--btn-blue);
   color: #ffffff;
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
 }
 
 .btn-secondary {
-  background-color: var(--card-bg);
-  color: var(--text-main);
-  border: 1px solid var(--border);
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-/* Seções Principais */
-.container {
-  max-width: 800px;
-  margin: 3rem auto;
-  padding: 0 1rem;
-}
-
-.code-box {
-  background-color: #010409;
-  border: 1px solid var(--border);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-  overflow-x: auto;
-  font-family: monospace;
-  color: var(--accent);
-}
-
-.quote-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border);
-  padding: 2rem;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.quote-card blockquote {
-  font-size: 1.3rem;
-  font-style: italic;
-  margin-bottom: 0.5rem;
-}
-
-.quote-card cite {
+  background-color: var(--btn-gray);
   color: var(--text-sub);
-  font-style: normal;
 }
 
-footer {
-  text-align: center;
-  padding: 2rem;
-  border-top: 1px solid var(--border);
+/* Feature Card */
+.feature-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: left;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.feature-card h3 {
   color: var(--text-sub);
-  margin-top: 4rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.feature-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.feature-card code {
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  color: var(--text-title);
 }
