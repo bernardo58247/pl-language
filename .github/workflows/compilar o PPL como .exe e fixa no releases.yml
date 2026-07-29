@@ -28,7 +28,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: "PPL Windows (Latest Build)"
+          name: "PPL Builds (Latest)"
           body: "compilação automática de alta performance para windows gerada a partir das últimas alterações no `ppl.cpp`."
           draft: false
           prerelease: false
