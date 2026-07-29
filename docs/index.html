@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PPL - Linguagem de Programação</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Script para ler Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
-  <!-- Menu de Navegação Suspenso (Dropdown) -->
+  <!-- Menu de Navegação Suspenso -->
   <nav class="navbar">
     <div class="logo">PPL</div>
     
@@ -16,17 +18,16 @@
       <button class="dropdown-btn">Menu ▾</button>
       <div class="dropdown-content">
         <a href="#instalacao">Instalação</a>
-        <a href="#filosofia">Filosofia</a>
         <a href="#recursos">Recursos</a>
         <a href="https://github.com/bernardo58247/ppl-programming-language" target="_blank">GitHub</a>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section (Idêntico à Imagem) -->
+  <!-- Estrutura Principal -->
   <main class="hero-container">
     
-    <!-- Ícone do App -->
+    <!-- Ícone -->
     <div class="app-icon">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1b2e1b"/>
@@ -35,32 +36,77 @@
       </svg>
     </div>
 
-    <!-- Título Principal -->
-    <h1 class="main-title">
-      PPL Language<br>
-      <span>Uma linguagem de programação moderna</span>
-    </h1>
+    <!-- Onde o Markdown será injetado -->
+    <div id="md-content">Carregando conteúdo...</div>
 
-    <!-- Frase Filosofia com Cursor -->
-    <p class="quote">
-      "Se você for criar uma coisa, faça ela ser única, não uma cópia."<span class="cursor">|</span>
-    </p>
-
-    <!-- Botões Principais -->
+    <!-- Botões Fixos estilo InstallerX -->
     <div class="action-buttons">
       <a href="#instalacao" class="btn btn-primary">Começar</a>
       <a href="https://github.com/bernardo58247/ppl-programming-language" target="_blank" class="btn btn-secondary">Ver no GitHub</a>
     </div>
 
-    <!-- Card de Recursos (Estilo InstallerX) -->
-    <div id="recursos" class="feature-card">
-      <h3>Compatibilidade & Leveza</h3>
-      <p>
-        Execute scripts <code>.ppl</code> e <code>.ppls</code> diretamente no Termux ou Linux. Conta com gerenciamento descentralizado de bibliotecas via <code>ppl-man</code> e suporte nativo em português.
-      </p>
-    </div>
-
   </main>
+
+  <script>
+    // Função para buscar e renderizar o arquivo .md
+    async function carregarMarkdown() {
+      try {
+        const resposta = await fetch('content.md');
+        const textoMarkdown = await resposta.text();
+        
+        // Converte Markdown para HTML
+        const htmlConvertido = marked.parse(textoMarkdown);
+        
+        // Injeta no container
+        document.getElementById('md-content').innerHTML = htmlConvertido;
+        
+        // Ajusta classes dinamicamente para manter o CSS idêntico
+        configurarEstilos();
+      } catch (erro) {
+        document.getElementById('md-content').innerHTML = "<p>Erro ao carregar o conteúdo.</p>";
+      }
+    }
+
+    function configurarEstilos() {
+      const container = document.getElementById('md-content');
+      
+      // Ajusta os títulos principais
+      const h1 = container.querySelector('h1');
+      const h2 = container.querySelector('h2');
+      if (h1 && h2) {
+        h1.className = 'main-title';
+        h1.innerHTML = `${h1.innerText}<br><span>${h2.innerText}</span>`;
+        h2.remove();
+      }
+
+      // Ajusta a frase/citação
+      const quote = container.querySelector('p');
+      if (quote && quote.innerText.includes('"')) {
+        quote.className = 'quote';
+        quote.innerHTML = `${quote.innerText}<span class="cursor">|</span>`;
+      }
+
+      // Envolve os blocos de texto nos cards do InstallerX
+      const h3s = container.querySelectorAll('h3');
+      h3s.forEach((h3, index) => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'feature-card';
+        if (index === 1) cardDiv.id = 'instalacao';
+        
+        h3.parentNode.insertBefore(cardDiv, h3);
+        cardDiv.appendChild(h3);
+        
+        let proximo = cardDiv.nextElementSibling;
+        while (proximo && proximo.tagName !== 'H3') {
+          let aux = proximo.nextElementSibling;
+          cardDiv.appendChild(proximo);
+          proximo = aux;
+        }
+      });
+    }
+
+    carregarMarkdown();
+  </script>
 
 </body>
 </html>
