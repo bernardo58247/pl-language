@@ -27,7 +27,7 @@ if [ "$LANG_OPT" = "2" ]; then
     MSG_USING_COMPILER="-> Using compiler:"
     MSG_COMPILING="-> Compiling PPL..."
     MSG_INSTALLING="-> Installing binary to"
-    MSG_SUCCESS="\nInstallation completed successfully!\nRun your scripts using: ppl script_name.ppls"
+    MSG_SUCCESS="\nInstallation completed successfully!\nRun your scripts using: ppl script_name.ppls and install libraries using ppl-man install (name-of-the-user/name-of-the-repo)"
     MSG_ERR_DL="Error: Failed to download ppl.cpp from GitHub."
 else
     MSG_TITLE="=== Instalador do PPL (C++) ==="
@@ -109,7 +109,12 @@ fi
 echo "$MSG_COMPILING"
 $CXX -O3 -std=c++17 -s "$TMP_DIR/ppl.cpp" -o "$TMP_DIR/ppl"
 
-# 8. instalação do binário
+# 8. instalação do ppl-man
+echo "-> instalando o ppl-man..."
+curl -fsSL "https://raw.githubusercontent.com/bernardo58247/ppl-programming-language/refs/heads/main/ppl-man" -o $PREFIX/bin/ppl-man
+chmod +x $PREFIX/bin/ppl-man
+
+# 9. instalação do binário
 echo "$MSG_INSTALLING $BIN_DIR/ppl..."
 $SUDO mkdir -p "$BIN_DIR"
 $SUDO cp "$TMP_DIR/ppl" "$BIN_DIR/ppl"
