@@ -1,0 +1,56 @@
+name: Validar Sintaxe PPLS (Exemplos)
+
+on:
+  push:
+    paths:
+      - 'examples/**/*.ppls'
+  pull_request:
+    paths:
+      - 'examples/**/*.ppls'
+
+jobs:
+  validar-exemplos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar compilador g++
+        run: sudo apt-get update && sudo apt-get install -y g++
+
+      - name: Compilar o interpretador PPL
+        run: |
+          g++ -O3 -std=c++17 ppl.cpp -o ppl_test
+          chmod +x ppl_test
+
+      - name: Validar arquivos .ppls na pasta exemplos
+        run: |
+          echo "=== Verificando scripts .ppls na pasta exemplos ==="
+          
+          erros=0
+
+          for arq in examples/**/*.ppls; do
+            [ -e "$arq" ] || continue
+
+            echo "Testando sintaxe de: $arq"
+            
+            ./ppl_test "$arq" > /dev/null 2>&1
+            status=$?
+
+            if [ $status -ne 0 ]; then
+              echo "❌ Erro de sintaxe encontrado em: $arq"
+              erros=$((erros + 1))
+            else
+              echo "✓ Sintaxe OK: $arq"
+            fi
+          done
+
+          if [ $erros -gt 0 ]; then
+            echo ""
+            echo "Falha: $erros arquivo(s) com erros de sintaxe."
+            exit 1
+          else
+            echo ""
+            echo "Todos os exemplos .ppls passaram no teste!"
+          fi
