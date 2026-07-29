@@ -3,6 +3,9 @@ name: compilar e publicar release
 on:
   push:
     branches: [ "main", "master" ]
+    paths:
+      # roda SÓ quando houver alteração neste arquivo específico
+      - 'src/ppl.cpp'
 
 jobs:
   build-and-release:
